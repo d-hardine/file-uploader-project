@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up to Hardine File Sharing</title>
+</head>
+<body>
+    <main>
+        <form action="/sign-up" method="post">
+            <h1>Create a New Account</h1>
+            <label for="firstname">First Name</label>
+            <input id="firstname" name="firstname" placeholder="Bruce" type="text" required value=<%= locals.firstname %>>
+            <label for="lastname">Last Name</label>
+            <input id="lastname" name="lastname" placeholder="Wayne" type="text" required value=<%= locals.lastname %>>
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="bruce.wayne" type="text" required value=<%= locals.username %>>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required/>
+            <div class="password-info">Min 8 characters, numbers & letters</div>
+            <label for="confirm-password">Confirm Password</label>
+            <input id="confirm-password" name="confirmPassword" type="password" required/>
+            <button type="submit">Sign Up</button>
+            <div>Already a member? Please <a href="/">login</a>.</div>
+        </form>
+        <%- include("partials/errors.ejs") %>
+    </main>
+</body>
+</html>
