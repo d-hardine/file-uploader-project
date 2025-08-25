@@ -6,10 +6,6 @@
     <title>Hardine File Sharing</title>
 </head>
 <body>
-    <% if (locals.user) { %>
-        <h1>Hello <%= user.firstName %>!</h1>
-        <a href="log-out"><button>LOG OUT</button></a>
-    <% } else { %>
     <form action="/" method="post">
         <h1>Please Login First</h1>
         <label for="username">Username</label>
@@ -19,6 +15,5 @@
         <button type="submit">Log In</button>
         <div>Doesn't have an Account? Please sign-up <a href="/sign-up">here</a>.</div>
     </form>
-    <% } %>
 </body>
 </html>

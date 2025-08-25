@@ -2,10 +2,11 @@ const bcrypt = require('bcryptjs')
 const passport = require('passport')
 const { body, validationResult } = require('express-validator')
 const { PrismaClient } = require('../generated/prisma')
-//const { PrismaClient } = require('@prisma/client/edge')
 const prisma = new PrismaClient
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
 
-const indexLoginGet = (req, res) => {res.render('index', {user: req.user})}
+const indexGet = (req, res) => {res.render('index', {user: req.user})}
 
 const signupGet = (req, res) => {
     if(req.isAuthenticated())
@@ -69,8 +70,20 @@ const signupPost = [validateUser, async (req, res, next) => {
 
 
 
-const indexLoginPost = passport.authenticate('local', {successRedirect:'/', failureRedirect:'/sign-up'})
+const indexLoginAuth = passport.authenticate('local', {failureRedirect:'/sign-up', failureMessage: true})
+const indexLoginSuccess = (req, res) => {
+    res.redirect(`/profile`)
+}
 
+const profileGet = (req, res) => {
+    if(req.isAuthenticated())
+        res.render('profile', {user: req.user})
+    else
+        res.redirect('/')
+}
+
+const uploadTest = upload.single('avatar')
+const uploadTestNext = (req, res) => res.redirect('/profile')
 
 const logoutGet = (req, res, next) => {
     req.logOut((err) => {
@@ -129,9 +142,13 @@ const adminPost = [validateAdmin, async (req, res) => {
 */
 
 module.exports = {
-    indexLoginGet,
+    indexGet,
     signupGet,
     signupPost,
-    indexLoginPost,
+    indexLoginAuth,
+    indexLoginSuccess,
+    profileGet,
+    uploadTest,
+    uploadTestNext,
     logoutGet
 }
