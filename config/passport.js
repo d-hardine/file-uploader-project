@@ -13,7 +13,6 @@ passport.use(
                     username: username
                 }
             })
-
             if (!user) { //check if username is even avalable in the database,
                 return done(null, false, { message: "Incorrect username" }) //null means it's not an error, false means reject the auth (code 401)
             }

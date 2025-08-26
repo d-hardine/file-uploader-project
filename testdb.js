@@ -10,6 +10,12 @@ async function main() {
         }
     })
     console.log(findUser)
+
+    https://storify-ymie.onrender.com/upload
+
+    Bruce Wayne
+    bruce.wayne@batmail.com
+    12349876
     */
     const allUsers = await prisma.user.findMany()
     console.log(allUsers)

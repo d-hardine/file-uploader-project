@@ -1,22 +1,34 @@
+//depedencies
 const path = require('node:path')
 const express = require('express')
 const session = require('express-session')
-const passport = require('passport')
 const fileUploaderRouter = require('./routes/fileUploaderRouter')
-
 const { PrismaClient } = require('./generated/prisma')
 const { PrismaSessionStore } = require('@quixo3/prisma-session-store')
+const passport = require('passport')
 
+// Load environment variables
+require('dotenv').config();
+
+//express initialization
 const app = express()
+const PORT = process.env.PORT || 3000
+
+//view engine setup, using EJS
 //app.set('views', path.join(__dirname, 'views')) might be unnecessary
 app.set('view engine', 'ejs')
-const assetsPath = path.join(__dirname, "public"); //needed to connect css
-app.use(express.static(assetsPath)); //needed to connect css
+
+//static files middleware, e.g css files
+const assetsPath = path.join(__dirname, "public");
+app.use(express.static(assetsPath));
+
+//access html body
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
+// Session configuration with PostgreSQL and prisma ORM store
 app.use(session({
-    secret:'el poco loco',
+    secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true,
     store: new PrismaSessionStore(
@@ -32,8 +44,10 @@ app.use(session({
     }
 }))
 
+//initialize passport middleware
 app.use(passport.session())
 
+//routes middleware
 app.use(fileUploaderRouter)
 
 // Need to require the entire Passport config module so app.js knows about it
@@ -43,5 +57,5 @@ app.listen(3000, (error) => {
     if(error)
         throw error
 
-    console.log('app listening on post 3000!')
+    console.log(`app listening on post ${PORT}!`)
 })
