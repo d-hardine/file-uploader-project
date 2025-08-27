@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Hardine File Sharing Home</title>
+</head>
+<body>
+    <% if (locals.user) { %>
+        <h1>Hello <%= user.firstName %>!</h1>
+        <a href="/log-out"><button>LOG OUT</button></a>
+        <!--Multer Test-->
+        <form action="/dashboard" method="post" enctype="multipart/form-data">
+            <label for="upload">Upload Here</label>
+            <input type="file" id="upload" name="upload" />
+            <input type="submit" value="upload">
+        </form>
+        <% if (locals.uploadedFiles) { %>
+            <ul>
+                <% uploadedFiles.forEach(uploadedFile => { %>
+                    <li><a href="/download/<%= uploadedFile.id %>"><%= uploadedFile.originalFileName %></a></li>
+                <% }) %>
+            </ul>
+        <% } %>
+        <!--<a href="/download">download batman image</a>-->
+    <% } %>
+</body>
+</html>

@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/d-hardine/file-uploader-project#readme",
   "dependencies": {
-    "@prisma/client": "^6.14.0",
     "@quixo3/prisma-session-store": "^3.1.13",
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.1",
