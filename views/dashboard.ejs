@@ -12,7 +12,11 @@
         <a href="/log-out"><button>LOG OUT</button></a>
         <br>
         <br>
-        <a href="/upload"><button>Upload Files Here</button></a>
+        <form action="/upload" method="post">
+            <input type="hidden" value=<%= currentFolderId %> name="currentFolderId">
+            <input type="hidden" value=<%= currentUrl %> name="currentUrl">
+            <button>Upload File Here WITH POST METHOD</button>
+        </form>
         <h3>Current folder: <%= currentFolderName %></h3>
         <% if (locals.nextFoldersInfo) { %>
             <ul>

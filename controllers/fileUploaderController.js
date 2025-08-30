@@ -57,7 +57,7 @@ const dashboardGet = async (req, res) => {
     if(req.isAuthenticated()) {
         const rootFolderInfo = await db.getRootFolderInfo(req.user.id)
         const nextFoldersInfo = await db.getNextFolderInfo(rootFolderInfo.folderIdAfter)
-        const uploadedFiles = await db.getUploadedFiles(req.user)
+        const uploadedFiles = await db.getUploadedFiles(req.user, rootFolderInfo.id)
         res.render('dashboard', {
             user: req.user,
             currentFolderName: rootFolderInfo.folderName,
@@ -75,7 +75,7 @@ const dashboardFolderGet = async (req, res) => {
     if(req.isAuthenticated()) {
         const currentFolderInfo = await db.getCurrentFolderInfo(req.user.id, req.params.folderId)
         const nextFoldersInfo = await db.getNextFolderInfo(currentFolderInfo.folderIdAfter)
-        const uploadedFiles = await db.getUploadedFiles(req.user)
+        const uploadedFiles = await db.getUploadedFiles(req.user, currentFolderInfo.id)
         res.render('dashboard', {
             user: req.user,
             currentFolderName: currentFolderInfo.folderName,
@@ -89,17 +89,19 @@ const dashboardFolderGet = async (req, res) => {
         res.redirect('/')
 }
 
-const uploadGet = (req, res) => {
-    if(req.isAuthenticated())
-        res.render('upload')
+const uploadGetButActuallyPost = (req, res) => {
+    if(req.isAuthenticated()) {
+        res.render('upload', {currentFolderId: req.body.currentFolderId, currentUrl: req.body.currentUrl })
+    }
     else
         res.redirect('/')
 }
 
-const uploadPost = upload.single('upload')
-const uploadPostNext = async (req, res) => {
-    await db.storageCreate(req.user, req.file)
-    res.redirect('/dashboard')
+const uploadRealPost = upload.single('upload')
+const uploadRealPostNext = async (req, res) => {
+    const currentFolderInfo = await db.getCurrentFolderInfo(req.user.id, req.body.currentFolderId)
+    await db.uploadFile(req.user, req.file, currentFolderInfo.id)
+    res.redirect(req.body.currentUrl)
 }
 
 const downloadGet = async (req, res) => {
@@ -125,7 +127,7 @@ const createFolderGetButActuallyPost = async (req, res) => {
 const createFolderRealPost = async (req, res) => {
     if(req.isAuthenticated()) {
         const currentFolderInfo = await db.getCurrentFolderInfo(req.user.id, req.body.currentFolderId)
-        await db.createFolder(req.user, req.body.newFolderName, currentFolderInfo.folderName)
+        await db.createFolder(req.user, req.body.newFolderName, currentFolderInfo.id)
         res.redirect(req.body.currentUrl)
     }
 }
@@ -146,9 +148,9 @@ module.exports = {
     indexLoginAuth,
     dashboardGet,
     dashboardFolderGet,
-    uploadGet,
-    uploadPost,
-    uploadPostNext,
+    uploadGetButActuallyPost,
+    uploadRealPost,
+    uploadRealPostNext,
     downloadGet,
     createFolderGetButActuallyPost,
     createFolderRealPost,

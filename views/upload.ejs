@@ -6,9 +6,11 @@
     <title>Upload File</title>
 </head>
 <body>
-    <form action="/upload" method="post" enctype="multipart/form-data">
+    <form action="/upload-post" method="post" enctype="multipart/form-data">
         <label for="upload">Upload Here</label>
         <input type="file" id="upload" name="upload" />
+        <input type="hidden" value=<%= currentFolderId %> name="currentFolderId">
+        <input type="hidden" value=<%= currentUrl %> name="currentUrl">
         <input type="submit" value="upload">
     </form>
 </body>

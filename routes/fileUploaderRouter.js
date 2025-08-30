@@ -11,8 +11,8 @@ fileUploaderRouter.post('/sign-up', fileUploaderController.signupPost, fileUploa
 fileUploaderRouter.get('/dashboard', fileUploaderController.dashboardGet)
 fileUploaderRouter.get('/dashboard/:folderId', fileUploaderController.dashboardFolderGet)
 
-fileUploaderRouter.get('/upload', fileUploaderController.uploadGet)
-fileUploaderRouter.post('/upload', fileUploaderController.uploadPost, fileUploaderController.uploadPostNext)
+fileUploaderRouter.post('/upload', fileUploaderController.uploadGetButActuallyPost)
+fileUploaderRouter.post('/upload-post', fileUploaderController.uploadRealPost, fileUploaderController.uploadRealPostNext)
 
 fileUploaderRouter.get('/download/:storageId', fileUploaderController.downloadGet)
 

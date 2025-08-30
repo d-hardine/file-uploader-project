@@ -25,20 +25,22 @@ async function isUsernameDuplicate(inputtedUsername) {
     })
 }
 
-async function getUploadedFiles(user) {
+async function getUploadedFiles(user, currentFolderId) {
     return await prisma.storage.findMany({
         where: {
-            authorId: user.id
+            authorId: user.id,
+            folderId: currentFolderId
         }
     })
 }
 
-async function storageCreate(user, fileInfo) {
+async function uploadFile(user, fileInfo, currentFolderId) {
     return await prisma.storage.create({
         data: {
             authorId: user.id,
             originalFileName: fileInfo.originalname,
-            filePath: fileInfo.path
+            filePath: fileInfo.path,
+            folderId: currentFolderId
         }
     })
 }
@@ -51,7 +53,7 @@ async function downloadFile(storageId) {
     })
 }
 
-async function createFolder(user, newFolderName, currentFolderName) {
+async function createFolder(user, newFolderName, currentFolderId) {
     const newFolderQuery = await prisma.folder.create({
         data: {
             authorId: user.id,
@@ -62,7 +64,7 @@ async function createFolder(user, newFolderName, currentFolderName) {
         where: {
             AND: [
                 {authorId: user.id},
-                {folderName: currentFolderName}
+                {id: currentFolderId}
             ]
         },
         data: {
@@ -109,7 +111,7 @@ module.exports = {
     createNewUser,
     isUsernameDuplicate,
     getUploadedFiles,
-    storageCreate,
+    uploadFile,
     downloadFile,
     createFolder,
     getRootFolderInfo,
