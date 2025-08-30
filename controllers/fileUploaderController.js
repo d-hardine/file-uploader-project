@@ -19,7 +19,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-const indexGet = (req, res) => {res.render('index', {user: req.user})}
+const indexGet = (req, res) => {
+    if(req.isAuthenticated())
+        res.redirect('/dashboard')
+    else
+        res.render('index')
+}
 
 const signupGet = (req, res) => {
     if(req.isAuthenticated())
@@ -46,30 +51,82 @@ const signupPost = [validators.validateUser, async (req, res, next) => {
     }
 }]
 
-const indexLoginAuth = passport.authenticate('local', {successRedirect: '/dashboard' ,failureRedirect:'/sign-up'})
+const indexLoginAuth = passport.authenticate('local', {successRedirect:'/dashboard', failureRedirect:'/sign-up', failureMessage: true})
 
 const dashboardGet = async (req, res) => {
     if(req.isAuthenticated()) {
+        const rootFolderInfo = await db.getRootFolderInfo(req.user.id)
+        const nextFoldersInfo = await db.getNextFolderInfo(rootFolderInfo.folderIdAfter)
         const uploadedFiles = await db.getUploadedFiles(req.user)
-        res.render('dashboard', {user: req.user, uploadedFiles: uploadedFiles})
+        res.render('dashboard', {
+            user: req.user,
+            currentFolderName: rootFolderInfo.folderName,
+            currentFolderId: rootFolderInfo.id,
+            uploadedFiles: uploadedFiles,
+            nextFoldersInfo: nextFoldersInfo,
+            currentUrl: req.originalUrl
+        })
     }
     else
         res.redirect('/')
 }
 
-const uploadMiddleware = upload.single('upload')
-const uploadNext = async (req, res) => {
+const dashboardFolderGet = async (req, res) => {
+    if(req.isAuthenticated()) {
+        const currentFolderInfo = await db.getCurrentFolderInfo(req.user.id, req.params.folderId)
+        const nextFoldersInfo = await db.getNextFolderInfo(currentFolderInfo.folderIdAfter)
+        const uploadedFiles = await db.getUploadedFiles(req.user)
+        res.render('dashboard', {
+            user: req.user,
+            currentFolderName: currentFolderInfo.folderName,
+            currentFolderId: currentFolderInfo.id,
+            uploadedFiles: uploadedFiles,
+            nextFoldersInfo: nextFoldersInfo,
+            currentUrl: req.originalUrl
+        })
+    }
+    else
+        res.redirect('/')
+}
+
+const uploadGet = (req, res) => {
+    if(req.isAuthenticated())
+        res.render('upload')
+    else
+        res.redirect('/')
+}
+
+const uploadPost = upload.single('upload')
+const uploadPostNext = async (req, res) => {
     await db.storageCreate(req.user, req.file)
     res.redirect('/dashboard')
 }
 
-const downloadTest = async (req, res) => {
+const downloadGet = async (req, res) => {
     if(req.isAuthenticated()) {
         const downloadFileInfo = await db.downloadFile(req.params.storageId)
         res.download(downloadFileInfo[0].filePath, downloadFileInfo[0].originalFileName, (err) => {
         if(err)
             res.status(404).send('File not found')
         })
+    }
+    else
+        res.redirect('/')
+}
+
+const createFolderGetButActuallyPost = async (req, res) => {
+    if(req.isAuthenticated()) {
+        res.render('create-folder', {currentFolderId: req.body.currentFolderId, currentUrl: req.body.currentUrl })
+    }
+    else
+        res.redirect('/')
+}
+
+const createFolderRealPost = async (req, res) => {
+    if(req.isAuthenticated()) {
+        const currentFolderInfo = await db.getCurrentFolderInfo(req.user.id, req.body.currentFolderId)
+        await db.createFolder(req.user, req.body.newFolderName, currentFolderInfo.folderName)
+        res.redirect(req.body.currentUrl)
     }
 }
 
@@ -88,8 +145,12 @@ module.exports = {
     signupPost,
     indexLoginAuth,
     dashboardGet,
-    uploadMiddleware,
-    uploadNext,
-    downloadTest,
+    dashboardFolderGet,
+    uploadGet,
+    uploadPost,
+    uploadPostNext,
+    downloadGet,
+    createFolderGetButActuallyPost,
+    createFolderRealPost,
     logoutGet
 }

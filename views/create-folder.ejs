@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a New Folder</title>
+</head>
+<body>
+    <main>
+        <form action="/create-folder-post" method="post">
+            <h1>Create a New Folder</h1>
+            <label for="newFolderName">New Folder Name</label>
+            <input id="newFolderName" name="newFolderName" type="text" required>
+            <input type="hidden" value=<%= currentFolderId %> name="currentFolderId">
+            <input type="hidden" value=<%= currentUrl %> name="currentUrl">
+            <button type="submit">Create New Folder</button>
+        </form>
+    </main>
+</body>
+</html>

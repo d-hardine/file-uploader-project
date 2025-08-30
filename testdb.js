@@ -17,8 +17,17 @@ async function main() {
     bruce.wayne@batmail.com
     12349876
     */
+    /*
     const allUsers = await prisma.user.findMany()
     console.log(allUsers)
+    */
+    const root =  await prisma.folder.findFirst({
+        where: {
+            authorId: 19,
+            folderName: 'root'
+        }    
+   })
+   console.log(root)
 }
 
 main()

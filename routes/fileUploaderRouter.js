@@ -4,11 +4,22 @@ const fileUploaderRouter = Router()
 
 fileUploaderRouter.get('/', fileUploaderController.indexGet)
 fileUploaderRouter.post('/', fileUploaderController.indexLoginAuth)
+
 fileUploaderRouter.get('/sign-up', fileUploaderController.signupGet)
 fileUploaderRouter.post('/sign-up', fileUploaderController.signupPost, fileUploaderController.indexLoginAuth) //auto login after create an account
+
 fileUploaderRouter.get('/dashboard', fileUploaderController.dashboardGet)
-fileUploaderRouter.post('/dashboard', fileUploaderController.uploadMiddleware, fileUploaderController.uploadNext)
-fileUploaderRouter.get('/download/:storageId', fileUploaderController.downloadTest)
+fileUploaderRouter.get('/dashboard/:folderId', fileUploaderController.dashboardFolderGet)
+
+fileUploaderRouter.get('/upload', fileUploaderController.uploadGet)
+fileUploaderRouter.post('/upload', fileUploaderController.uploadPost, fileUploaderController.uploadPostNext)
+
+fileUploaderRouter.get('/download/:storageId', fileUploaderController.downloadGet)
+
+fileUploaderRouter.post('/create-folder', fileUploaderController.createFolderGetButActuallyPost)
+fileUploaderRouter.post('/create-folder-post', fileUploaderController.createFolderRealPost)
+
 fileUploaderRouter.get('/log-out', fileUploaderController.logoutGet)
+fileUploaderRouter.get('{*splat}', (req, res) => res.status(404).send('where are you going lil bro'))
 
 module.exports = fileUploaderRouter
