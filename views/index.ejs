@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Hardine File Sharing</title>
 </head>
 <body>
-    <form action="/" method="post">
-        <h1>Please Login First</h1>
-        <label for="username">Username</label>
-        <input id="username" name="username" placeholder="bruce.wayne" type="text" required value=<%= locals.username %>>
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required/>
-        <button type="submit">Log In</button>
-        <div>Doesn't have an Account? Please sign-up <a href="/sign-up">here</a>.</div>
-    </form>
+    <%- include("partials/header.ejs") %>
+    <main class="index-main">
+        <form action="/" method="post" class="login-form">
+            <h1>Please Login First</h1>
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="bruce.wayne" type="text" required value=<%= locals.username %>>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required/>
+            <button type="submit">Log In</button>
+            <div>Doesn't have an Account? Please sign-up <a href="/sign-up">here</a>.</div>
+        </form>
+    </main>
+    <%- include("partials/footer.ejs") %>
 </body>
 </html>

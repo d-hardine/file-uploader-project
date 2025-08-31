@@ -57,6 +57,7 @@ async function createFolder(user, newFolderName, currentFolderId) {
     const newFolderQuery = await prisma.folder.create({
         data: {
             authorId: user.id,
+            folderIdBefore: currentFolderId,
             folderName: newFolderName,
         }
     })

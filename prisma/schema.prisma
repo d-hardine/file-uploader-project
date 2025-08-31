@@ -43,10 +43,12 @@ model Storage {
 }
 
 model Folder {
-  id            Int       @id @default(autoincrement())
-  authorId      Int
-  author        User      @relation(fields: [authorId], references: [id])
-  folderName    String    @db.VarChar(50)
-  folderIdAfter Int[]
-  storage       Storage[]
+  id             Int       @id @default(autoincrement())
+  authorId       Int
+  author         User      @relation(fields: [authorId], references: [id])
+  folderIdBefore Int?
+  folderName     String    @db.VarChar(50)
+  createdAt      DateTime  @default(now())
+  folderIdAfter  Int[]
+  storage        Storage[]
 }

@@ -13,11 +13,14 @@
         <br>
         <br>
         <form action="/upload" method="post">
-            <input type="hidden" value=<%= currentFolderId %> name="currentFolderId">
+            <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
             <input type="hidden" value=<%= currentUrl %> name="currentUrl">
-            <button>Upload File Here WITH POST METHOD</button>
+            <button>Upload File Here</button>
         </form>
-        <h3>Current folder: <%= currentFolderName %></h3>
+        <h3>Current folder: <%= currentFolderInfo.folderName %></h3>
+        <% if (locals.currentFolderInfo.folderIdBefore) { %>
+            <a href="/dashboard/<%= currentFolderInfo.folderIdBefore %>">back one folder</a>
+        <% } %>
         <% if (locals.nextFoldersInfo) { %>
             <ul>
                 <% nextFoldersInfo.forEach(nextFolder => { %>
@@ -33,7 +36,7 @@
             </ul>
         <% } %>
         <form action="/create-folder" method="post">
-            <input type="hidden" value=<%= currentFolderId %> name="currentFolderId">
+            <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
             <input type="hidden" value=<%= currentUrl %> name="currentUrl">
             <button>CREATE FOLDER</button>
         </form>

@@ -1,3 +1,45 @@
+/* https://colorhunt.co/palette/55587998a1bcded3c4f4ebd3 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+
 body {
-    background-color: brown;
+    background-color: #98A1BC;
+}
+
+header {
+    display: flex;
+    background-color: #555879;
+    padding: 10px 10vw;
+    justify-content: space-between;
+    align-items: center;
+}
+
+main {
+    min-height: 90vh;
+}
+
+.index-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 400px;
+    margin: auto;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    background-color: #DED3C4;
+    align-items: center;
 }

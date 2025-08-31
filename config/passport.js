@@ -14,14 +14,14 @@ passport.use(
                 }
             })
             if (!user) { //check if username is even avalable in the database,
-                return done(null, false, { message: "Incorrect username" }) //null means it's not an error, false means reject the auth (code 401)
+                return done(null, false, { message: "Incorrect username and/or password" }) //null means it's not an error, false means reject the auth (code 401)
             }
             const match = await bcrypt.compare(password, user.password)
             if (!match) { //check if password/username couple is match
                 // passwords do not match!
-                return done(null, false, { message: "Incorrect password" }) //null means it's not an error, false means reject the auth (code 401)
+                return done(null, false, { message: "Incorrect username and/or password" }) //null means it's not an error, false means reject the auth (code 401)
             }
-            return done(null, user); //return username, could be retrieved as req.user
+            return done(null, user, {message: 'login success'}); //return username, could be retrieved as req.user
         } catch(err) {
             return done(err)
         }

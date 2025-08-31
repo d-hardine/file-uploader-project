@@ -51,7 +51,7 @@ const signupPost = [validators.validateUser, async (req, res, next) => {
     }
 }]
 
-const indexLoginAuth = passport.authenticate('local', {successRedirect:'/dashboard', failureRedirect:'/sign-up', failureMessage: true})
+const indexLoginAuth = passport.authenticate('local', {successRedirect:'/dashboard', failureRedirect:'/sign-up', successMessage: true, failureMessage: true})
 
 const dashboardGet = async (req, res) => {
     if(req.isAuthenticated()) {
@@ -60,8 +60,7 @@ const dashboardGet = async (req, res) => {
         const uploadedFiles = await db.getUploadedFiles(req.user, rootFolderInfo.id)
         res.render('dashboard', {
             user: req.user,
-            currentFolderName: rootFolderInfo.folderName,
-            currentFolderId: rootFolderInfo.id,
+            currentFolderInfo: rootFolderInfo,
             uploadedFiles: uploadedFiles,
             nextFoldersInfo: nextFoldersInfo,
             currentUrl: req.originalUrl
@@ -78,8 +77,7 @@ const dashboardFolderGet = async (req, res) => {
         const uploadedFiles = await db.getUploadedFiles(req.user, currentFolderInfo.id)
         res.render('dashboard', {
             user: req.user,
-            currentFolderName: currentFolderInfo.folderName,
-            currentFolderId: currentFolderInfo.id,
+            currentFolderInfo: currentFolderInfo,
             uploadedFiles: uploadedFiles,
             nextFoldersInfo: nextFoldersInfo,
             currentUrl: req.originalUrl
