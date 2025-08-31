@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Upload File</title>
 </head>
 <body>
-    <form action="/upload-post" method="post" enctype="multipart/form-data">
-        <label for="upload">Upload Here</label>
-        <input type="file" id="upload" name="upload" />
-        <input type="hidden" value=<%= currentFolderId %> name="currentFolderId">
-        <input type="hidden" value=<%= currentUrl %> name="currentUrl">
-        <input type="submit" value="upload">
-    </form>
+    <%- include("partials/header.ejs") %>
+    <main>
+        <form action="/upload-post" method="post" enctype="multipart/form-data" class="upload-form">
+            <label for="upload">Upload Here</label>
+            <input type="file" id="upload" name="upload" />
+            <input type="hidden" value=<%= currentFolderId %> name="currentFolderId">
+            <input type="hidden" value=<%= currentUrl %> name="currentUrl">
+            <input type="submit" value="upload">
+        </form>
+    </main>
+    <%- include("partials/footer.ejs") %>
 </body>
 </html>

@@ -40,7 +40,7 @@ async function uploadFile(user, fileInfo, currentFolderId) {
             authorId: user.id,
             originalFileName: fileInfo.originalname,
             filePath: fileInfo.path,
-            folderId: currentFolderId
+            folderId: currentFolderId,
         }
     })
 }

@@ -1,7 +1,6 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require("bcryptjs") //password encryption, for safety
-//const pool = require('../db/pool')
 const { PrismaClient } = require('../generated/prisma')
 const prisma  = new PrismaClient
 
@@ -39,7 +38,6 @@ passport.deserializeUser(async (id, done) => {
                 id: id
             }
         })
-
         done(null, user)
     } catch(err) {
         done(err)

@@ -11,15 +11,21 @@
 </head>
 <body>
     <%- include("partials/header.ejs") %>
-    <main class="index-main">
-        <form action="/" method="post" class="login-form">
+    <main class="main-index">
+        <form action="/" method="post" class="main-login-form">
             <h1>Please Login First</h1>
             <label for="username">Username</label>
             <input id="username" name="username" placeholder="bruce.wayne" type="text" required value=<%= locals.username %>>
             <label for="password">Password</label>
             <input id="password" name="password" type="password" required/>
             <button type="submit">Log In</button>
-            <div>Doesn't have an Account? Please sign-up <a href="/sign-up">here</a>.</div>
+            <div>Doesn't have an account? Please sign-up <a href="/sign-up">here</a>.</div>
+            <% if (locals.loginError) { %>
+                <div class="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <%= loginError %>
+                </div> 
+            <% } %>
         </form>
     </main>
     <%- include("partials/footer.ejs") %>

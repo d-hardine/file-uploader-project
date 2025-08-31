@@ -1,4 +1,11 @@
 <header>
-    <div>LOGO</div>
-    <div>Navigation</div>
+    <div class="logo-text"><a href="/">Hardine File Sharing</a></div>
+    <div class="header-right-container">
+        <% if (locals.user) { %>
+            <div><b><%= user.username %></b></div>
+            <a href="/log-out"><button>LOGOUT</button></a>
+        <% } else {%>
+            <a href="/sign-up"><button>CREATE AN ACCOUNT</button></a>
+        <% } %>
+    </div>
 </header>

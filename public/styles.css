@@ -9,6 +9,9 @@
 
 body {
     background-color: #98A1BC;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
 }
 
 header {
@@ -19,22 +22,66 @@ header {
     align-items: center;
 }
 
-main {
-    min-height: 90vh;
-}
-
-.index-main {
+.header-right-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    gap: 10px;
 }
 
-.login-form {
+.logo-text > a {
+    font-size: 40px;
+    font-family: Caveat;
+    text-decoration: none;
+    color: inherit;
+}
+
+.dashboard-container {
+    display: flex;
+}
+
+.main-dashboard-form {
+    padding: 25px 25px;
+}
+
+aside {
+    background-color: #555879;
+    width: 150px;
+}
+
+main {
+    padding: 50px 10vw;
+}
+
+.main-login-form, .sign-up-form, .upload-form {
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 400px;
     margin: auto;
+}
+
+/* The alert message box */
+.alert {
+  padding: 10px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
 }
 
 footer {

@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Sign Up to Hardine File Sharing</title>
 </head>
 <body>
+    <%- include("partials/header.ejs") %>
     <main>
-        <form action="/sign-up" method="post">
+        <form action="/sign-up" method="post" class="sign-up-form">
             <h1>Create a New Account</h1>
             <label for="firstname">First Name</label>
             <input id="firstname" name="firstname" placeholder="Bruce" type="text" required value=<%= locals.firstname %>>
@@ -25,5 +30,6 @@
         </form>
         <%- include("partials/errors.ejs") %>
     </main>
+    <%- include("partials/footer.ejs") %>
 </body>
 </html>

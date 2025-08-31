@@ -3,43 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css"> <!--remove the backslash make whole page broken, it's not happening on another pages. The fuck-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Hardine File Sharing Home</title>
 </head>
 <body>
-    <% if (locals.user) { %>
-        <h1>Hello <%= user.firstName %>!</h1>
-        <a href="/log-out"><button>LOG OUT</button></a>
-        <br>
-        <br>
-        <form action="/upload" method="post">
-            <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
-            <input type="hidden" value=<%= currentUrl %> name="currentUrl">
-            <button>Upload File Here</button>
-        </form>
-        <h3>Current folder: <%= currentFolderInfo.folderName %></h3>
-        <% if (locals.currentFolderInfo.folderIdBefore) { %>
-            <a href="/dashboard/<%= currentFolderInfo.folderIdBefore %>">back one folder</a>
-        <% } %>
-        <% if (locals.nextFoldersInfo) { %>
-            <ul>
-                <% nextFoldersInfo.forEach(nextFolder => { %>
-                    <li><a href="/dashboard/<%= nextFolder.id %>">FOLDER: <%= nextFolder.folderName %></a></li>
-                <% }) %>
-            </ul>
-        <% } %>
-        <% if (locals.uploadedFiles) { %>
-            <ul>
-                <% uploadedFiles.forEach(uploadedFile => { %>
-                    <li><a href="/download/<%= uploadedFile.id %>"><%= uploadedFile.originalFileName %></a></li>
-                <% }) %>
-            </ul>
-        <% } %>
-        <form action="/create-folder" method="post">
-            <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
-            <input type="hidden" value=<%= currentUrl %> name="currentUrl">
-            <button>CREATE FOLDER</button>
-        </form>
-    <% } %>
+    <%- include("partials/header.ejs") %>
+    <div class="dashboard-container">
+        <aside>
+            <h3><%= user.firstName %> <%= user.lastName %></h3>
+            <form action="/upload" method="post">
+                <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
+                <input type="hidden" value=<%= currentUrl %> name="currentUrl">
+                <button>Upload File Here</button>
+            </form>
+            <form action="/create-folder" method="post">
+                <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
+                <input type="hidden" value=<%= currentUrl %> name="currentUrl">
+                <button>CREATE FOLDER</button>
+            </form>
+        </aside>
+        <main class="main-dashboard-form">
+            <% if (locals.user) { %>
+                <h1>Hello <%= user.firstName %>!</h1>
+                <h3>Current folder: <%= currentFolderInfo.folderName %></h3>
+                <% if (locals.currentFolderInfo.folderIdBefore) { %>
+                    <a href="/dashboard/<%= currentFolderInfo.folderIdBefore %>">back one folder</a>
+                <% } %>
+                <% if (locals.nextFoldersInfo) { %>
+                    <ul>
+                        <% nextFoldersInfo.forEach(nextFolder => { %>
+                            <li><a href="/dashboard/<%= nextFolder.id %>">FOLDER: <%= nextFolder.folderName %></a></li>
+                        <% }) %>
+                    </ul>
+                <% } %>
+                <% if (locals.uploadedFiles) { %>
+                    <ul>
+                        <% uploadedFiles.forEach(uploadedFile => { %>
+                            <li><a href="/download/<%= uploadedFile.id %>"><%= uploadedFile.originalFileName %></a></li>
+                        <% }) %>
+                    </ul>
+                <% } %>
+            <% } %>
+        </main>
+    </div>
+    <%- include("partials/footer.ejs") %>
 </body>
 </html>

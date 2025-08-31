@@ -22,8 +22,10 @@ const upload = multer({ storage: storage })
 const indexGet = (req, res) => {
     if(req.isAuthenticated())
         res.redirect('/dashboard')
-    else
-        res.render('index')
+    else {
+        res.render('index', {loginError: req.session.messages})
+        req.session.messages = undefined
+    }
 }
 
 const signupGet = (req, res) => {
@@ -51,7 +53,7 @@ const signupPost = [validators.validateUser, async (req, res, next) => {
     }
 }]
 
-const indexLoginAuth = passport.authenticate('local', {successRedirect:'/dashboard', failureRedirect:'/sign-up', successMessage: true, failureMessage: true})
+const indexLoginAuth = passport.authenticate('local', {successRedirect:'/dashboard', failureRedirect:'/', failureMessage: true})
 
 const dashboardGet = async (req, res) => {
     if(req.isAuthenticated()) {
@@ -89,7 +91,7 @@ const dashboardFolderGet = async (req, res) => {
 
 const uploadGetButActuallyPost = (req, res) => {
     if(req.isAuthenticated()) {
-        res.render('upload', {currentFolderId: req.body.currentFolderId, currentUrl: req.body.currentUrl })
+        res.render('upload', {user: req.user, currentFolderId: req.body.currentFolderId, currentUrl: req.body.currentUrl })
     }
     else
         res.redirect('/')
@@ -116,7 +118,7 @@ const downloadGet = async (req, res) => {
 
 const createFolderGetButActuallyPost = async (req, res) => {
     if(req.isAuthenticated()) {
-        res.render('create-folder', {currentFolderId: req.body.currentFolderId, currentUrl: req.body.currentUrl })
+        res.render('create-folder', {user: req.user, currentFolderId: req.body.currentFolderId, currentUrl: req.body.currentUrl })
     }
     else
         res.redirect('/')
