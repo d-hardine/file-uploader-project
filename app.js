@@ -31,7 +31,7 @@ require('./config/cloudinary')
 
 // Session configuration with PostgreSQL and prisma ORM store
 app.use(session({
-    secret: process.env.SECRET,
+    secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
     store: new PrismaSessionStore(
