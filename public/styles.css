@@ -82,6 +82,10 @@ header {
     gap: 10px;
 }
 
+.dashboard-back-button {
+    grid-column: 1 / -1;
+}
+
 .dashboard-folder {
     grid-column: 1 / -2;
 }
