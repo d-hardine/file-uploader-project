@@ -19,12 +19,15 @@ const PORT = process.env.PORT || 3000
 app.set('view engine', 'ejs')
 
 //static files middleware, e.g css files
-const assetsPath = path.join(__dirname, "public");
-app.use(express.static(assetsPath));
+const assetsPath = path.join(__dirname, "public")
+app.use(express.static(assetsPath))
 
 //access html body
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+//initializing cloudinary
+require('./config/cloudinary')
 
 // Session configuration with PostgreSQL and prisma ORM store
 app.use(session({
@@ -51,7 +54,7 @@ app.use(passport.session())
 app.use(fileUploaderRouter)
 
 // Need to require the entire Passport config module so app.js knows about it
-require('./config/passport');
+require('./config/passport')
 
 app.listen(3000, (error) => {
     if(error)

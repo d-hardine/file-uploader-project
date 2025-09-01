@@ -6,6 +6,8 @@ const db = require('../db/queries')
 const validators = require('../config/validators')
 const multer  = require('multer')
 const fns = require('date-fns')
+const cloudinary = require('cloudinary').v2
+
 
 //setting the upload location and file naming for multer middleware
 const storage = multer.diskStorage({
@@ -108,18 +110,20 @@ const uploadGetButActuallyPost = (req, res) => {
 
 const uploadRealPost = upload.single('upload')
 const uploadRealPostNext = async (req, res) => {
-    const currentFolderInfo = await db.getCurrentFolderInfo(req.user.id, req.body.currentFolderId)
-    await db.uploadFile(req.user, req.file, currentFolderInfo.id)
+    const uploadToCloud = await cloudinary.uploader.upload(req.file.path)
+    await db.uploadFile(req.user, req.file, uploadToCloud, req.body.currentFolderId)
     res.redirect(req.body.currentUrl)
 }
 
 const downloadGet = async (req, res) => {
     if(req.isAuthenticated()) {
         const downloadFileInfo = await db.downloadFile(req.params.storageId)
-        res.download(downloadFileInfo[0].filePath, downloadFileInfo[0].originalFileName, (err) => {
-        if(err)
-            res.status(404).send('File not found')
-        })
+        //res.download only for local files
+        //res.download(downloadFileInfo[0].filePath, downloadFileInfo[0].originalFileName, (err) => {
+        //if(err)
+        //    res.status(404).send('File not found')
+        //})
+        res.redirect(downloadFileInfo[0].filePath)
     }
     else
         res.redirect('/')
@@ -143,11 +147,12 @@ const createFolderRealPost = async (req, res) => {
 
 const renameFolderGetButActuallyPost = async (req, res) => {
     if(req.isAuthenticated()) {
+        const nextFolderInfo = await db.getCurrentFolderInfo(req.user.id, req.body.nextFolderId)
         res.render('rename-folder', {
             user: req.user,
             currentUrl: req.body.currentUrl,
             nextFolderId: req.body.nextFolderId,
-            nextFolderName: req.body.nextFolderName
+            nextFolderName: nextFolderInfo.folderName
         })
     }
     else
@@ -163,11 +168,12 @@ const renameFolderRealPost = async (req, res) => {
 
 const renameFileGetButActuallyPost = async (req, res) => {
     if(req.isAuthenticated()) {
+        const storageInfo = await db.getStorageInfo(req.user.id, req.body.uploadedFileId)
         res.render('rename-file', {
             user: req.user,
             currentUrl: req.body.currentUrl,
             uploadedFileId: req.body.uploadedFileId,
-            uploadedFileName: req.body.uploadedFileName
+            uploadedFileName: storageInfo.originalFileName
         })
     }
     else

@@ -47,6 +47,13 @@ header {
     color: inherit;
 }
 
+.sign-up-password-info {
+    color: rgb(61, 61, 61);
+    font-size: small;
+    line-height: 0.2;
+
+}
+
 .dashboard-main {
     padding: 10px 10vw;
     width: 100%;

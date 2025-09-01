@@ -34,13 +34,13 @@ async function getUploadedFiles(user, currentFolderId) {
     })
 }
 
-async function uploadFile(user, fileInfo, currentFolderId) {
+async function uploadFile(user, fileInfo, uploadedInfo, currentFolderId) {
     return await prisma.storage.create({
         data: {
             authorId: user.id,
             originalFileName: fileInfo.originalname,
-            filePath: fileInfo.path,
-            folderId: currentFolderId,
+            filePath: uploadedInfo.secure_url,
+            folderId: Number(currentFolderId),
             fileSize: fileInfo.size
         }
     })
@@ -142,6 +142,15 @@ async function getNextFolderInfo(nextFolderArray) {
     })
 }
 
+async function getStorageInfo(userId, currentFolderId) {
+    return await prisma.storage.findFirst({
+        where: {
+            authorId: userId,
+            id: Number(currentFolderId)
+        }
+   })
+}
+
 module.exports = {
     createNewUser,
     isUsernameDuplicate,
@@ -154,5 +163,6 @@ module.exports = {
     deleteFile,
     getRootFolderInfo,
     getCurrentFolderInfo,
-    getNextFolderInfo
+    getNextFolderInfo,
+    getStorageInfo
 }

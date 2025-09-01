@@ -47,7 +47,7 @@
                             </svg>
                             <%= nextFolder.folderName %>
                         </a>
-                        <form action="/rename-folder" method="post">
+                        <form action="/rename-folder" method="post" title="rename">
                             <input type="hidden" value=<%= currentUrl %> name="currentUrl">
                             <input type="hidden" value=<%= nextFolder.id %> name="nextFolderId">
                             <input type="hidden" value=<%= nextFolder.folderName %> name="nextFolderName">
@@ -63,7 +63,7 @@
                 <% } %>
                 <% if (locals.uploadedFiles) { %>
                     <% uploadedFiles.forEach(uploadedFile => { %>
-                        <a href="/download/<%= uploadedFile.id %>" class="dashboard-file remove-link-decoration">
+                        <a target="_blank" href="/download/<%= uploadedFile.id %>" class="dashboard-file remove-link-decoration">
                             <svg fill="#080341" width="30px" height="30px" viewBox="-1 0 16 16" id="file-text-16px" xmlns="http://www.w3.org/2000/svg">
                                 <path id="Path_105" data-name="Path 105" d="M-6.039,5.308a.5.5,0,0,0-.108-.162l-5-5a.5.5,0,0,0-.162-.108A.5.5,0,0,0-11.5,0h-6A2.5,2.5,0,0,0-20,2.5v11A2.5,2.5,0,0,0-17.5,16h9A2.5,2.5,0,0,0-6,13.5v-8A.5.5,0,0,0-6.039,5.308ZM-11,1.707-7.707,5H-9.5A1.5,1.5,0,0,1-11,3.5ZM-8.5,15h-9A1.5,1.5,0,0,1-19,13.5V2.5A1.5,1.5,0,0,1-17.5,1H-12V3.5A2.5,2.5,0,0,0-9.5,6H-7v7.5A1.5,1.5,0,0,1-8.5,15ZM-9,12.5a.5.5,0,0,1-.5.5h-7a.5.5,0,0,1-.5-.5.5.5,0,0,1,.5-.5h7A.5.5,0,0,1-9,12.5Zm0-3a.5.5,0,0,1-.5.5h-7a.5.5,0,0,1-.5-.5.5.5,0,0,1,.5-.5h7A.5.5,0,0,1-9,9.5Z" transform="translate(20)"/>
                             </svg>
@@ -73,10 +73,9 @@
                         <div><%= (uploadedFile.fileSize / 1000000).toFixed(2) %> MB</div>
                         <div class="dashboard-storage-updated-at"><%= uploadedFile.updatedAt %></div>
                         <div class="dashboard-action-container">
-                            <form action="/rename-file" method="post">
+                            <form action="/rename-file" method="post" title="rename">
                                 <input type="hidden" value=<%= currentUrl %> name="currentUrl">
                                 <input type="hidden" value=<%= uploadedFile.id %> name="uploadedFileId">
-                                <input type="hidden" value=<%= uploadedFile.originalFileName %> name="uploadedFileName">
                                 <label>
                                     <input type="submit" style="display: none;">
                                     <svg class="rename-btn" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +84,7 @@
                                     </svg>
                                 </label>
                             </form>
-                            <form action="/delete" method="post">
+                            <form action="/delete" method="post" title="delete">
                                 <input type="hidden" value=<%= uploadedFile.id %> name="uploadedFileId">
                                 <input type="hidden" value=<%= currentUrl %> name="currentUrl">
                                 <label>
