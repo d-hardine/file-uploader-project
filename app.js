@@ -60,5 +60,5 @@ app.listen(3000, (error) => {
     if(error)
         throw error
 
-    console.log(`app listening on post ${PORT}!`)
+    console.log(`app listening on port ${PORT}!`)
 })
