@@ -2,7 +2,7 @@
   "name": "file-uploader-project",
   "version": "1.0.0",
   "description": "Simple File Uploader Project using Node.js/Express.js, with Passport.js and Prisma ORM",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "devStart": "nodemon app.js"
