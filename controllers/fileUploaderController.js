@@ -11,13 +11,10 @@ const cloudinary = require('cloudinary').v2
 
 //setting the upload location and file naming for multer middleware
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads')
-  },
-  filename: function (req, file, cb) {
-    let fn = file.originalname + ' - ' + Date.now() + path.extname(file.originalname)
-    cb(null, fn)
-  }
+    filename: function (req, file, cb) {
+        let fn = file.originalname + ' - ' + Date.now() + path.extname(file.originalname)
+        cb(null, fn)
+    }
 })
 
 const upload = multer({ storage: storage })
