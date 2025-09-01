@@ -41,6 +41,7 @@ async function uploadFile(user, fileInfo, currentFolderId) {
             originalFileName: fileInfo.originalname,
             filePath: fileInfo.path,
             folderId: currentFolderId,
+            fileSize: fileInfo.size
         }
     })
 }
@@ -61,7 +62,7 @@ async function createFolder(user, newFolderName, currentFolderId) {
             folderName: newFolderName,
         }
     })
-    console.log(await prisma.folder.updateMany({
+    return await prisma.folder.updateMany({
         where: {
             AND: [
                 {authorId: user.id},
@@ -71,7 +72,40 @@ async function createFolder(user, newFolderName, currentFolderId) {
         data: {
             folderIdAfter: { push: newFolderQuery.id }
         }
-    }))
+    })
+}
+
+async function renameFolder(user, renamedFolderName, nextFolderId) {
+    return await prisma.folder.update({
+        where: {
+            authorId: user.id,
+            id: Number(nextFolderId)
+        },
+        data: {
+            folderName: renamedFolderName
+        },
+    })
+}
+
+async function renameFile(user, renamedFileName, uploadedFileId) {
+    return await prisma.storage.update({
+        where: {
+            authorId: user.id,
+            id: Number(uploadedFileId)
+        },
+        data: {
+            originalFileName: renamedFileName
+        }
+    })
+}
+
+async function deleteFile(user, uploadedFileId) {
+    return await prisma.storage.delete({
+        where: {
+            authorId: user.id,
+            id: Number(uploadedFileId)
+        }
+    })
 }
 
 async function getRootFolderInfo(userId) {
@@ -115,6 +149,9 @@ module.exports = {
     uploadFile,
     downloadFile,
     createFolder,
+    renameFolder,
+    renameFile,
+    deleteFile,
     getRootFolderInfo,
     getCurrentFolderInfo,
     getNextFolderInfo

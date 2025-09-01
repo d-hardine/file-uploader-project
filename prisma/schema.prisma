@@ -39,7 +39,7 @@ model Storage {
   updatedAt        DateTime @updatedAt
   originalFileName String
   filePath         String
-  FileSize         Int
+  fileSize         Int
   folderId         Int
   folder           Folder   @relation(fields: [folderId], references: [id])
 }

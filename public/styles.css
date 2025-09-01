@@ -14,6 +14,19 @@ body {
     grid-template-rows: auto 1fr auto;
 }
 
+button {
+    background-color: #F4EBD3;
+    border: none;
+    min-height: 30px;
+    padding: 0 20px;
+    border-radius: 10px;
+}
+
+button:hover {
+    background-color: #DED3C4;
+    cursor: pointer;
+}
+
 header {
     display: flex;
     background-color: #555879;
@@ -34,24 +47,59 @@ header {
     color: inherit;
 }
 
-.dashboard-container {
+.dashboard-main {
+    padding: 10px 10vw;
+    width: 100%;
     display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
-.main-dashboard-form {
-    padding: 25px 25px;
+.dashboard-button-container {
+    display: flex;
+    gap: 20px;
 }
 
-aside {
-    background-color: #555879;
-    width: 150px;
+.dashboard-storage-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    row-gap: 30px;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.dashboard-file {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dashboard-folder {
+    grid-column: 1 / -2;
+}
+
+.dashboard-action-container {
+    display: flex;
+    gap: 15px;
+}
+
+.remove-link-decoration {
+    text-decoration: none;
+    color: black;
+}
+
+.dashboard-storage-created-at, .dashboard-storage-updated-at {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 main {
     padding: 50px 10vw;
 }
 
-.main-login-form, .sign-up-form, .upload-form {
+.main-login-form, .sign-up-form, .upload-form, .create-folder-form, .rename-folder-form, .rename-file-form {
     display: flex;
     flex-direction: column;
     gap: 10px;

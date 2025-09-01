@@ -19,6 +19,14 @@ fileUploaderRouter.get('/download/:storageId', fileUploaderController.downloadGe
 fileUploaderRouter.post('/create-folder', fileUploaderController.createFolderGetButActuallyPost)
 fileUploaderRouter.post('/create-folder-post', fileUploaderController.createFolderRealPost)
 
+fileUploaderRouter.post('/rename-folder', fileUploaderController.renameFolderGetButActuallyPost)
+fileUploaderRouter.post('/rename-folder-post', fileUploaderController.renameFolderRealPost)
+
+fileUploaderRouter.post('/rename-file', fileUploaderController.renameFileGetButActuallyPost)
+fileUploaderRouter.post('/rename-file-post', fileUploaderController.renameFileRealPost)
+
+fileUploaderRouter.post('/delete', fileUploaderController.deleteFilePost)
+
 fileUploaderRouter.get('/log-out', fileUploaderController.logoutGet)
 fileUploaderRouter.get('{*splat}', (req, res) => res.status(404).send('where are you going lil bro'))
 

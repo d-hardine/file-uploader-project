@@ -7,18 +7,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>Create a New Folder</title>
+    <title>Rename Folder</title>
 </head>
 <body>
     <%- include("partials/header.ejs") %>
     <main>
-        <form action="/create-folder-post" method="post" class="create-folder-form">
-            <h1>Create a New Folder</h1>
-            <label for="newFolderName">New Folder Name</label>
-            <input id="newFolderName" name="newFolderName" type="text" required>
-            <input type="hidden" value=<%= currentFolderId %> name="currentFolderId">
+        <form action="/rename-folder-post" method="post" class="rename-folder-form">
+            <h1>Rename Folder</h1>
+            <label for="renamedFolderName">Rename Folder "<%= nextFolderName %>"</label>
+            <input id="renamedFolderName" name="renamedFolderName" type="text" required>
+            <input type="hidden" value=<%= nextFolderId %> name="nextFolderId">
             <input type="hidden" value=<%= currentUrl %> name="currentUrl">
-            <button type="submit">Create New Folder</button>
+            <button type="submit">Rename Folder</button>
         </form>
     </main>
     <%- include("partials/footer.ejs") %>

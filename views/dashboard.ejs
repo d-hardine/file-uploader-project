@@ -11,44 +11,96 @@
 </head>
 <body>
     <%- include("partials/header.ejs") %>
-    <div class="dashboard-container">
-        <aside>
-            <h3><%= user.firstName %> <%= user.lastName %></h3>
-            <form action="/upload" method="post">
-                <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
-                <input type="hidden" value=<%= currentUrl %> name="currentUrl">
-                <button>Upload File Here</button>
-            </form>
-            <form action="/create-folder" method="post">
-                <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
-                <input type="hidden" value=<%= currentUrl %> name="currentUrl">
-                <button>CREATE FOLDER</button>
-            </form>
-        </aside>
-        <main class="main-dashboard-form">
-            <% if (locals.user) { %>
-                <h1>Hello <%= user.firstName %>!</h1>
-                <h3>Current folder: <%= currentFolderInfo.folderName %></h3>
+    <main class="dashboard-main">
+        <% if (locals.user) { %>
+            <h1>Hello <%= user.firstName %> <%= user.lastName %>!</h1>
+            <div class="dashboard-button-container">
+                <form action="/upload" method="post">
+                    <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
+                    <input type="hidden" value=<%= currentUrl %> name="currentUrl">
+                    <button>Upload File Here</button>
+                </form>
+                <form action="/create-folder" method="post">
+                    <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
+                    <input type="hidden" value=<%= currentUrl %> name="currentUrl">
+                    <button>CREATE FOLDER</button>
+                </form>
+            </div>
+            <h3>Current folder: <%= currentFolderInfo.folderName %></h3>
+            <div class="dashboard-storage-container">
+                <div><b>Name</b></div>
+                <div><b>Date added</b></div>
+                <div><b>Size</b></div>
+                <div><b>Modified at</b></div>
+                <div><b>Action</b></div>
                 <% if (locals.currentFolderInfo.folderIdBefore) { %>
-                    <a href="/dashboard/<%= currentFolderInfo.folderIdBefore %>">back one folder</a>
+                    <a href="/dashboard/<%= currentFolderInfo.folderIdBefore %>" class="dashboard-file dashboard-folder remove-link-decoration">
+                    <svg fill="#080341" width="30px" height="30px" viewBox="0 0 24 24" id="turn-around-left-top-direction-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><path id="primary" d="M3,9H16.5A4.49,4.49,0,0,1,21,13.5h0A4.49,4.49,0,0,1,16.5,18H13" style="fill: none; stroke: #080341; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path><polyline id="primary-2" data-name="primary" points="6 12 3 9 6 6" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline></svg>
+                        <b>..</b>
+                    </a>
                 <% } %>
                 <% if (locals.nextFoldersInfo) { %>
-                    <ul>
-                        <% nextFoldersInfo.forEach(nextFolder => { %>
-                            <li><a href="/dashboard/<%= nextFolder.id %>">FOLDER: <%= nextFolder.folderName %></a></li>
-                        <% }) %>
-                    </ul>
+                    <% nextFoldersInfo.forEach(nextFolder => { %>
+                        <a href="/dashboard/<%= nextFolder.id %>" class="dashboard-file remove-link-decoration dashboard-folder">
+                        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.31066 4.5H3V18.75L3.75 19.5H20.25L21 18.75V6H10.8107L10.2804 5.46968L10.2804 5.4697L9.31066 4.5ZM10.1894 7.5H10.1893L8.68934 6H4.5V18H19.5V9.75001H12.4394L10.1894 7.5ZM19.5 8.25001V7.5H12.3107L13.0607 8.25001H19.5Z" fill="#080341"/>
+                            </svg>
+                            <%= nextFolder.folderName %>
+                        </a>
+                        <form action="/rename-folder" method="post">
+                            <input type="hidden" value=<%= currentUrl %> name="currentUrl">
+                            <input type="hidden" value=<%= nextFolder.id %> name="nextFolderId">
+                            <input type="hidden" value=<%= nextFolder.folderName %> name="nextFolderName">
+                            <label>
+                                <input type="submit" style="display: none;">
+                                <svg class="rename-btn" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#080341" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#080341" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </label>
+                        </form>
+                    <% }) %>
                 <% } %>
                 <% if (locals.uploadedFiles) { %>
-                    <ul>
-                        <% uploadedFiles.forEach(uploadedFile => { %>
-                            <li><a href="/download/<%= uploadedFile.id %>"><%= uploadedFile.originalFileName %></a></li>
-                        <% }) %>
-                    </ul>
+                    <% uploadedFiles.forEach(uploadedFile => { %>
+                        <a href="/download/<%= uploadedFile.id %>" class="dashboard-file remove-link-decoration">
+                            <svg fill="#080341" width="30px" height="30px" viewBox="-1 0 16 16" id="file-text-16px" xmlns="http://www.w3.org/2000/svg">
+                                <path id="Path_105" data-name="Path 105" d="M-6.039,5.308a.5.5,0,0,0-.108-.162l-5-5a.5.5,0,0,0-.162-.108A.5.5,0,0,0-11.5,0h-6A2.5,2.5,0,0,0-20,2.5v11A2.5,2.5,0,0,0-17.5,16h9A2.5,2.5,0,0,0-6,13.5v-8A.5.5,0,0,0-6.039,5.308ZM-11,1.707-7.707,5H-9.5A1.5,1.5,0,0,1-11,3.5ZM-8.5,15h-9A1.5,1.5,0,0,1-19,13.5V2.5A1.5,1.5,0,0,1-17.5,1H-12V3.5A2.5,2.5,0,0,0-9.5,6H-7v7.5A1.5,1.5,0,0,1-8.5,15ZM-9,12.5a.5.5,0,0,1-.5.5h-7a.5.5,0,0,1-.5-.5.5.5,0,0,1,.5-.5h7A.5.5,0,0,1-9,12.5Zm0-3a.5.5,0,0,1-.5.5h-7a.5.5,0,0,1-.5-.5.5.5,0,0,1,.5-.5h7A.5.5,0,0,1-9,9.5Z" transform="translate(20)"/>
+                            </svg>
+                            <%= uploadedFile.originalFileName %>
+                        </a>
+                        <div class="dashboard-storage-created-at"><%= uploadedFile.createdAt %></div>
+                        <div><%= (uploadedFile.fileSize / 1000000).toFixed(2) %> MB</div>
+                        <div class="dashboard-storage-updated-at"><%= uploadedFile.updatedAt %></div>
+                        <div class="dashboard-action-container">
+                            <form action="/rename-file" method="post">
+                                <input type="hidden" value=<%= currentUrl %> name="currentUrl">
+                                <input type="hidden" value=<%= uploadedFile.id %> name="uploadedFileId">
+                                <input type="hidden" value=<%= uploadedFile.originalFileName %> name="uploadedFileName">
+                                <label>
+                                    <input type="submit" style="display: none;">
+                                    <svg class="rename-btn" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#080341" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#080341" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </label>
+                            </form>
+                            <form action="/delete" method="post">
+                                <input type="hidden" value=<%= uploadedFile.id %> name="uploadedFileId">
+                                <input type="hidden" value=<%= currentUrl %> name="currentUrl">
+                                <label>
+                                    <input type="submit" style="display: none;">
+                                    <svg class="delete-btn" width="30px" height="30px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                        <path fill="#080341" fill-rule="evenodd" d="M7 1a2 2 0 00-2 2v2H2a1 1 0 000 2h.884c.036.338.078.754.12 1.213.11 1.202.218 2.664.218 3.787 0 1.47-.183 3.508-.315 4.776a2.015 2.015 0 002 2.224h10.186a2.015 2.015 0 002-2.224c-.132-1.268-.315-3.306-.315-4.776 0-1.123.107-2.585.218-3.787.042-.459.084-.875.12-1.213H18a1 1 0 100-2h-3V3a2 2 0 00-2-2H7zm6 4V3H7v2h6zM4.996 8.03c-.035-.378-.07-.728-.101-1.03h10.21a81.66 81.66 0 00-.1 1.03c-.112 1.212-.227 2.75-.227 3.97 0 1.584.194 3.714.325 4.982v.007a.02.02 0 01-.005.008l-.003.003H4.905a.024.024 0 01-.008-.01v-.008c.131-1.268.325-3.398.325-4.982 0-1.22-.115-2.758-.226-3.97zM8 8a1 1 0 011 1v6a1 1 0 11-2 0V9a1 1 0 011-1zm5 1a1 1 0 10-2 0v6a1 1 0 102 0V9z"/>
+                                    </svg>
+                                </label>
+                            </form>
+                        </div>
+                    <% }) %>
                 <% } %>
-            <% } %>
-        </main>
-    </div>
+            </div>
+        <% } %>
+    </main>
     <%- include("partials/footer.ejs") %>
 </body>
 </html>

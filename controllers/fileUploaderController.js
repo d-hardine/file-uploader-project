@@ -5,6 +5,7 @@ const { validationResult } = require('express-validator')
 const db = require('../db/queries')
 const validators = require('../config/validators')
 const multer  = require('multer')
+const fns = require('date-fns')
 
 //setting the upload location and file naming for multer middleware
 const storage = multer.diskStorage({
@@ -60,6 +61,10 @@ const dashboardGet = async (req, res) => {
         const rootFolderInfo = await db.getRootFolderInfo(req.user.id)
         const nextFoldersInfo = await db.getNextFolderInfo(rootFolderInfo.folderIdAfter)
         const uploadedFiles = await db.getUploadedFiles(req.user, rootFolderInfo.id)
+        uploadedFiles.forEach(uploadedFile => {
+            uploadedFile.createdAt = fns.formatDate(uploadedFile.createdAt, 'MM/dd/yyyy, HH:mm')
+            uploadedFile.updatedAt = fns.formatDate(uploadedFile.updatedAt, 'MM/dd/yyyy, HH:mm')
+        })
         res.render('dashboard', {
             user: req.user,
             currentFolderInfo: rootFolderInfo,
@@ -77,6 +82,10 @@ const dashboardFolderGet = async (req, res) => {
         const currentFolderInfo = await db.getCurrentFolderInfo(req.user.id, req.params.folderId)
         const nextFoldersInfo = await db.getNextFolderInfo(currentFolderInfo.folderIdAfter)
         const uploadedFiles = await db.getUploadedFiles(req.user, currentFolderInfo.id)
+        uploadedFiles.forEach(uploadedFile => {
+            uploadedFile.createdAt = fns.formatDate(uploadedFile.createdAt, 'MM/dd/yyyy, HH:mm')
+            uploadedFile.updatedAt = fns.formatDate(uploadedFile.updatedAt, 'MM/dd/yyyy, HH:mm')
+        })
         res.render('dashboard', {
             user: req.user,
             currentFolderInfo: currentFolderInfo,
@@ -132,6 +141,53 @@ const createFolderRealPost = async (req, res) => {
     }
 }
 
+const renameFolderGetButActuallyPost = async (req, res) => {
+    if(req.isAuthenticated()) {
+        res.render('rename-folder', {
+            user: req.user,
+            currentUrl: req.body.currentUrl,
+            nextFolderId: req.body.nextFolderId,
+            nextFolderName: req.body.nextFolderName
+        })
+    }
+    else
+        res.redirect('/')
+}
+
+const renameFolderRealPost = async (req, res) => {
+    if(req.isAuthenticated()) {
+        await db.renameFolder(req.user, req.body.renamedFolderName, req.body.nextFolderId)
+        res.redirect(req.body.currentUrl)
+    }
+}
+
+const renameFileGetButActuallyPost = async (req, res) => {
+    if(req.isAuthenticated()) {
+        res.render('rename-file', {
+            user: req.user,
+            currentUrl: req.body.currentUrl,
+            uploadedFileId: req.body.uploadedFileId,
+            uploadedFileName: req.body.uploadedFileName
+        })
+    }
+    else
+        res.redirect('/')
+}
+
+const renameFileRealPost = async (req, res) => {
+    if(req.isAuthenticated()) {
+        await db.renameFile(req.user, req.body.renamedFileName, req.body.uploadedFileId)
+        res.redirect(req.body.currentUrl)
+    }
+}
+
+const deleteFilePost = async (req, res) => {
+    if(req.isAuthenticated()) {
+        await db.deleteFile(req.user, req.body.uploadedFileId)
+        res.redirect(req.body.currentUrl)
+    }
+}
+
 const logoutGet = (req, res, next) => {
     req.logOut((err) => {
         if(err) {
@@ -154,5 +210,10 @@ module.exports = {
     downloadGet,
     createFolderGetButActuallyPost,
     createFolderRealPost,
+    renameFolderGetButActuallyPost,
+    renameFolderRealPost,
+    renameFileGetButActuallyPost,
+    renameFileRealPost,
+    deleteFilePost,
     logoutGet
 }
