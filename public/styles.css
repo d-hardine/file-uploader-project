@@ -38,6 +38,7 @@ header {
 .header-right-container {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 
 .logo-text > a {
@@ -108,6 +109,10 @@ header {
 
 main {
     padding: 50px 10vw;
+}
+
+.delete-btn:hover, .rename-btn:hover {
+    cursor: pointer;
 }
 
 .main-login-form, .sign-up-form, .upload-form, .create-folder-form, .rename-folder-form, .rename-file-form {

@@ -18,12 +18,12 @@
                 <form action="/upload" method="post">
                     <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
                     <input type="hidden" value=<%= currentUrl %> name="currentUrl">
-                    <button>Upload File Here</button>
+                    <button>UPLOAD</button>
                 </form>
                 <form action="/create-folder" method="post">
                     <input type="hidden" value=<%= currentFolderInfo.id %> name="currentFolderId">
                     <input type="hidden" value=<%= currentUrl %> name="currentUrl">
-                    <button>CREATE FOLDER</button>
+                    <button>NEW FOLDER</button>
                 </form>
             </div>
             <h3>Current folder: <%= currentFolderInfo.folderName %></h3>
