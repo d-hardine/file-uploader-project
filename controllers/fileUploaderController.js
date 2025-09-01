@@ -118,11 +118,13 @@ const uploadRealPostNext = async (req, res) => {
 const downloadGet = async (req, res) => {
     if(req.isAuthenticated()) {
         const downloadFileInfo = await db.downloadFile(req.params.storageId)
+
         //res.download only for local files
         //res.download(downloadFileInfo[0].filePath, downloadFileInfo[0].originalFileName, (err) => {
         //if(err)
         //    res.status(404).send('File not found')
         //})
+
         res.redirect(downloadFileInfo[0].filePath)
     }
     else
