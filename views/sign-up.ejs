@@ -27,8 +27,8 @@
             <input id="confirm-password" name="confirmPassword" type="password" required/>
             <button type="submit">Sign Up</button>
             <div>Already a member? Please <a href="/">login</a>.</div>
+            <%- include("partials/errors.ejs") %>
         </form>
-        <%- include("partials/errors.ejs") %>
     </main>
     <%- include("partials/footer.ejs") %>
 </body>

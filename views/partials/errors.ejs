@@ -1,8 +1,9 @@
 <% if (locals.errors) { %>
     <br>
-    <ul>
         <% errors.forEach(error => { %>
-            <li><%= error.msg %></li>
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <%= error.msg %>
+                </div>
         <% }) %>
-    </ul>
 <% } %>
